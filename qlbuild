@@ -1,0 +1,493 @@
+#!/usr/bin/env bash
+# (we use env for non-Linux OSes)
+#
+# Wrapper script for Lisp invocation with quicklisp preloaded.
+# Based on code from clbuild by Luke Gorrie and contributors.
+
+set -e
+
+# MacOS doesn't have "readlink -e", needed to follow symlinks.
+# We hack it using readlink, dirname, and cd.
+readlink_e() {
+    self="$0"
+    while test -h "$self"; do
+	cd "$(dirname $self)"
+	self=`readlink "$self"`
+    done
+    cd "$(dirname $self)"
+    pwd
+}
+BASE=$(readlink_e)
+qldir="$(echo ~/quicklisp)"
+
+find_project() {
+    tramp=$qldir/dists/quicklisp/installed/releases/$1.txt
+    if test -d "$tramp"; then
+	cat "$tramp"
+    fi
+}
+slime_dir=$(find_project slime)
+
+if test "$(uname -s)" = Darwin -a "$(uname -p)" = powerpc; then
+    darwinppc=1
+else
+    darwinppc=""
+fi
+
+source "$BASE/qlbuild.conf.default"
+if test -f "$BASE/qlbuild.conf"; then
+    source "$BASE/qlbuild.conf"
+fi
+
+# Fix up pathnames
+make_absolute_pn() {
+	if [ -n "$1" ] ; then
+		(cd "$BASE"
+		echo "$(cd "$(dirname "$1")" ; pwd)/$(basename "$1")")
+	fi
+}
+USER_INIT="$(make_absolute_pn "$USER_INIT")"
+
+set_lisp_warning() {
+    echo "Warning: Cannot find an executable for implementation $1" 1>&2
+}
+
+# Try to find an executable/command for a given lisp implementation
+set_lisp_command() {
+    case "$1" in
+        sbcl)
+            if [ -x ${target_dir}/bin/sbcl ]; then
+                export SBCL_HOME=${target_namestring}lib/sbcl/
+                export SBCL="${target_dir}/bin/sbcl"
+                if ! test -f "$BASE"/monster.core; then
+	            SBCL="$SBCL --core ${target_namestring}lib/sbcl/sbcl.core"
+                fi
+            elif which sbcl >/dev/null ; then
+                export SBCL="$(which sbcl)"
+            else
+                set_lisp_warning sbcl
+            fi
+            ;;
+        alisp)
+            if which alisp >/dev/null ; then
+                export ALISP="$(which alisp)"
+            else
+                set_lisp_warning alisp
+            fi
+            ;;
+        cmu)
+	    if which lisp >/dev/null ; then
+                export CMU="$(which lisp)"
+            else
+                set_lisp_warning cmu
+            fi
+            ;;
+        ecl)
+            export DYLD_LIBRARY_PATH="${target_dir}/lib:$DYLD_LIBRARY_PATH"
+            export ECL="${target_dir}/bin/ecl"
+            ;;
+        ccl)
+	    case `uname` in
+		Linux)
+		    case `uname -m` in
+			x86_64)
+			    binary=lx86cl64
+			    ;;
+                        *)
+                            set_lisp_warning ccl
+			    exit 1
+			    ;;
+			esac
+		    ;;
+                Darwin)
+                    case `uname -p` in
+                        powerpc)
+                            binary=dppccl
+                            ;;
+                        i386)
+                            binary=dx86cl64
+                            ;;
+                        *)
+                            set_lisp_warning ccl
+			    exit 1
+                            ;;
+                    esac
+                    ;;
+                *)
+                    set_lisp_warning ccl
+                    ;;
+            esac
+            if [ -x ${source_dir}/ccl/${binary} ]; then
+                export CCL=${source_dir}/ccl/${binary}
+            else
+                set_lisp_warning ccl
+                exit 1
+            fi
+            ;;
+        clisp)
+            if [ -x "${target_dir}/bin/clisp" ]; then
+                export CLISP="${target_dir}/bin/clisp"
+            else
+                set_lisp_warning clisp
+                exit 1
+            fi
+            ;;
+        ecl)
+            if [ -x "${target_namestring}bin/ecl" ]; then
+                export ECL="${target_namestring}bin/ecl"
+            else
+                set_lisp_warning ecl
+            fi
+            ;;
+        *)
+            set_lisp_warning "$1"
+            ;;
+    esac
+}
+
+configure_ccl() {
+    if [ -z "$CCL" ]; then
+        set_lisp_command ccl
+    fi
+    lisp=${1:-$CCL}
+    noinform="-Q"
+    end_toplevel_options="" #fixme
+    quit="(ccl:quit)"
+    eval="--eval"
+    core_option="-I"
+
+    if test x"$USER_INIT" = x/dev/null; then
+	# -l /dev/null does not work
+	common_options="-n"
+    elif test -n "$USER_INIT"; then
+	common_options="-n -l $USER_INIT"
+    else
+	common_options=""
+    fi
+
+    # fixme: this doesn't quite match the SBCL version yet:
+    build_options="$noinform --batch $common_options"
+    run_options="--batch $common_options"
+}
+
+configure_clisp() {
+    if [ -z "$CLISP" ]; then
+        set_lisp_command clisp
+    fi
+    lisp={$1:-$CLISP}
+
+    echo '*** Using CLISP.  Please note that CLISP support is not complete.'
+    lisp="$CLISP -repl"
+
+    noinform="" #fixme
+    end_toplevel_options="" #fixme
+    quit="(ext:quit)"
+    eval="-x"
+    core_option="-M"
+
+    if test -n "$USER_INIT"; then
+	common_options="-norc -i $USER_INIT"
+    else
+	common_options=""
+    fi
+
+    build_options="-on-error exit $common_options"
+    run_options="-on-error exit $common_options"
+}
+
+configure_alisp() {
+    if [ -z "$ALISP" ]; then
+        set_lisp_command alisp
+    fi
+    lisp={$1:-$ALISP}
+
+    lisp="$ALISP"
+
+    noinform="" #fixme
+    end_toplevel_options="" #fixme
+    quit="(excl:exit)"
+    eval="-e"
+    core_option="-I"
+
+    if test -n "$USER_INIT"; then
+	common_options="-qq -L $USER_INIT"
+    else
+	common_options=""
+    fi
+
+    # fixme
+    build_options="$common_options"
+    run_options="$common_options"
+}
+
+configure_sbcl() {
+    if [ -z "$SBCL" ]; then
+        set_lisp_command sbcl
+    fi
+    lisp=${1:-$SBCL}
+
+    noinform="--noinform"
+    end_toplevel_options="--end-toplevel-options"
+    quit="(sb-ext:quit)"
+    eval="--eval"
+    core_option="--core"
+
+    if test -n "$USER_INIT"; then
+	common_options="--userinit $USER_INIT"
+    else
+	common_options=""
+    fi
+
+    build_options="$noinform --noprint --disable-debugger $common_options"
+    run_options="--disable-debugger $common_options"
+}
+
+configure_cmu() {
+    if [ -z "$CMU" ]; then
+        set_lisp_command cmu
+    fi
+    lisp=${1:-$CMU}
+
+    noinform="-quiet"
+    end_toplevel_options="--"
+    quit="(ext:quit)"
+    eval="-eval"
+    core_option="-core"
+
+    if test x"$USER_INIT" = x/dev/null; then
+	common_options="-noinit"
+    elif test -n "$USER_INIT"; then
+	common_options="-init $USER_INIT"
+    else
+	common_options=""
+    fi
+
+    build_options="$noinform -batch $common_options"
+    run_options="-batch $common_options"
+}
+
+# Allow --implementation system_sbcl
+configure_system_sbcl() {
+    configure_sbcl
+    lisp=$(which sbcl)
+}
+
+configure_ecl() {
+    if [ -z "$ECL" ]; then
+        set_lisp_command ecl
+    fi
+    lisp=${1:-$ECL}
+
+    noinform="-q"
+    end_toplevel_options="--"
+    quit="(cl-user:quit)"
+    eval="-eval"
+    core_option="-c"
+    
+    if test -n "$USER_INIT" -a x"$USER_INIT" != x/dev/null; then
+        common_options="-load $USER_INIT"
+    else
+        common_options=""
+    fi
+
+    build_options="$noinform $common_options"
+    run_options="$common_options"
+}
+
+configure_lisp_implementation() {
+    # Get the implementation type (member sbcl ccl clisp alisp ecl cmu)
+    implementation=${1}
+
+    # if the given parameter specifies a lisp implementation by name, the name
+    # is used.  Otherwise the DEFAULT_LISP_IMPLEMENTATION is used.  Also check
+    # for environment variables for backwards comparability. Defaults to SBCL.
+    if [ -z ${implementation} ]; then
+        if [ -n "${DEFAULT_LISP_IMPLEMENTATION}" ]; then
+            implementation=${DEFAULT_LISP_IMPLEMENTATION}
+        elif [ -n "${CCL}" ]; then
+            implementation=ccl
+        elif [ -n "${CLISP}" ]; then
+            implementation=clisp
+        elif [ -n "${ALISP}" ]; then
+            implementation=alisp
+        elif [ -n "${ECL}" ]; then
+            implementation=ecl
+        elif [ -n "${CMU}" ]; then
+            implementation=cmu
+        else
+            implementation=sbcl
+        fi
+    fi
+
+    if [ "$(type -t "configure_$implementation")" = function ] && \
+        "configure_$implementation"; then
+        return
+    else
+        echo "Unknown implementation '$implementation'" 1>&2
+        exit 1
+    fi
+}
+
+export implementation=''
+if [ "$1" = "--implementation" ]; then
+    implementation=$2
+    configure_lisp_implementation $implementation
+    shift 2
+else
+    configure_lisp_implementation
+fi
+
+setup=$(echo ~/quicklisp/setup.lisp)
+require_asdf="(load \"$setup\")"
+
+clbuild_lisp() {
+    ${lisp} $common_options \
+	$eval "$require_asdf" \
+	"$@"
+}
+
+short_help() {
+	cat <<EOF
+Usage:
+  $0 COMMAND [ARGS...]
+
+Important commands are:
+
+  quickload PROJECT
+  slime                 run Lisp (using Emacs, recommended)
+  lisp                  run Lisp (using the terminal)
+EOF
+}
+
+write_slime_configuration() {
+    if test -n "$START_SLIME_USING_CORE"; then
+	cmd=preloaded
+    else
+	cmd=lisp
+    fi
+    cat <<EOF
+
+;; possibly controversial as a global default, but shipping a lisp
+;; that dies trying to talk to slime is stupid, so:
+(set-language-environment "UTF-8")
+(setq slime-net-coding-system 'utf-8-unix)
+
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+(require 'slime)
+
+;;; old clbuild code following, most of it now unneeded
+;;; (setq load-path (cons "${source_namestring}slime" load-path))
+;;; (setq load-path (cons "${source_namestring}slime/contrib" load-path))
+;;; (setq slime-backend "$BASE/.swank-loader.lisp")
+(setq inhibit-splash-screen t)
+;;; (load "${source_namestring}slime/slime")
+(setq inferior-lisp-program "$BASE/qlbuild $cmd")
+(slime-setup '(slime-fancy slime-tramp slime-asdf))
+(slime-require :swank-listener-hooks)
+(slime)
+
+EOF
+#     # while we're at it, also write the swank loader
+#     cat >$BASE/.swank-loader.lisp <<EOF
+# (unless (find-package 'swank-loader)
+#   (load "$slime_dir/swank-loader.lisp"))
+# EOF
+}
+
+install_quicklisp() {
+    qlidir="$BASE/source/quicklisp-installer"
+    qli="$qlidir/quicklisp.lisp"
+    mkdir -p "$qlidir"
+    wget -O "$qli" http://quickstart.quicklisp.org/quicklisp.lisp
+    echo "$quit" | \
+	clbuild_lisp \
+	$eval "(load \"$qli\")" \
+	$eval "(progn (quicklisp-quickstart:install) $quit)"
+}
+
+ensure_quicklisp() {
+    setup=$(echo ~/quicklisp/setup.lisp)
+    if ! test -f "$setup"; then
+	echo quicklisp not found, installing it now... 
+	install_quicklisp
+    fi
+}
+
+quickload() {
+    setup=$(echo ~/quicklisp/setup.lisp)
+    if ! test -f "$setup"; then
+	exec 2>&1
+	echo "quicklisp not found in ~/quicklisp"
+	echo "try running 'qlbuild quicklisp' first"
+	exit 1
+    fi
+    clbuild_lisp $eval "(load \"$setup\")" $eval "(ql:quickload \"$1\")"
+}
+
+ensure_project() {
+    project=$1
+    if ! test -d $(find_project $project); then
+	echo $project not found, installing now
+	quickload $project
+    fi
+}
+
+ensure_slime() {
+    ensure_project slime
+    ensure_project quicklisp-slime-helper
+}
+
+case $1 in
+    lisp)
+	shift;
+	ensure_quicklisp
+        clbuild_lisp "$@"
+        ;;
+    prepl)
+	shift;
+	ensure_quicklisp
+	if test -f "$BASE"/monster.core; then
+	    common_options="$core_option "$BASE"/monster.core $common_options"
+	fi
+        clbuild_lisp "$@" \
+	    $eval "(asdf:operate 'asdf:load-op :hemlock.tty)" \
+	    $eval "(hemlock:repl)"
+        ;;
+    preloaded)
+	shift;
+	ensure_quicklisp
+	if test -f "$BASE"/monster.core; then
+	    common_options="$core_option "$BASE"/monster.core $common_options"
+	fi
+        clbuild_lisp "$@"
+        ;;
+    slime)
+	shift
+	ensure_quicklisp
+	emacs_args="$@"
+	emacs=${EMACS-emacs}
+	write_slime_configuration >"$BASE/.start-slime.el"
+	ensure_slime
+	$emacs -l "$BASE/.start-slime.el" ${emacs_args}
+	;;
+    slime-configuration)
+	shift
+	echo ';; add this to your ~/.emacs to use qlbuild and its slime:'
+	echo ';;'
+	write_slime_configuration
+	;;
+    pwd)
+	echo $BASE
+	;;
+    quickload)
+        shift
+	ensure_quicklisp
+        quickload "$@"
+        ;;
+    help|-H|""|--help|-h|--long-help)
+	short_help
+	;;
+    *)
+	echo "invalid command $1, try --help for help"
+	exit 1
+esac

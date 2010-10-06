@@ -1,0 +1,62 @@
+# Optional qlbuild configuration options.
+
+# ############################################################
+#  This file is for defaults only. To override them,
+#  create a configuration file qlbuild.conf instead.
+# ############################################################
+
+# After startup, qlbuild sources
+#   1. qlbuild.conf.default (this file)
+#      containing only defaults (and various examples)
+#   2. qlbuild.conf (if it exists)
+#      with user-specific configuration 
+
+
+#### personal initfile
+
+# By default, we suppress loading of ~/.sbclrc, since users very often
+# have code in it that is incompatible with our fresh installation.
+#
+# Uncomment the "unset" line in clbuild.conf to suppress passing a
+#  --userinit argument to the lisp.
+#
+# When doing so, you might also want to unset SETF_CENTRAL_REGISTRY below.
+
+USER_INIT=/dev/null
+#unset USER_INIT
+
+# By default, we install a new value for ASDF:*CENTRAL-REGISTRY* using SETF.
+# Uncomment the following "unset" line in clbuild.conf to use PUSH instead.
+# Beware that your personal registry directories as well as projects
+# installed asdf-install will then mix freely with clbuild's projects as
+# far as ASDF is concerned.
+
+SETF_CENTRAL_REGISTRY=yes
+#unset SETF_CENTRAL_REGISTRY
+
+
+#### binary configuration
+
+DEFAULT_LISP_IMPLEMENTATION=sbcl
+
+# SBCL is the default, any others override $SBCL if commented out and no
+# DEFAULT_LISP_IMPLEMENTATION is specified
+#
+#  - Note that only SBCL is tested regularly.
+#  - OpenMCL support mostly works, but is not quite as well-tested.
+#  - CLISP is supported by clbuild, but hardly any application works.
+
+#SBCL=sbcl
+#CCL=~/ccl/lx86cl64
+#CLISP=clisp
+
+
+#### slime configuration
+
+# if enabled,  slime calls "clbuild preloaded"
+# if disabled, slime calls "clbuild lisp"
+#
+# default is disabled
+
+unset START_SLIME_USING_CORE
+#START_SLIME_USING_CORE=y
