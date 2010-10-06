@@ -422,19 +422,19 @@ quickload() {
 	echo "try running 'qlbuild quicklisp' first"
 	exit 1
     fi
-    clbuild_lisp $eval "(load \"$setup\")" $eval "(ql:quickload \"$1\")"
+    echo "$quit" | clbuild_lisp $eval "(load \"$setup\")" $eval "(ql:quickload \"$1\")"
 }
 
 ensure_project() {
     project=$1
-    if ! test -d $(find_project $project); then
+    if  test -z $(find_project $project); then
 	echo $project not found, installing now
 	quickload $project
     fi
 }
 
 ensure_slime() {
-    ensure_project slime
+    ensure_project swank
     ensure_project quicklisp-slime-helper
 }
 
@@ -447,6 +447,7 @@ case $1 in
     prepl)
 	shift;
 	ensure_quicklisp
+	ensure_project hemlock
 	if test -f "$BASE"/monster.core; then
 	    common_options="$core_option "$BASE"/monster.core $common_options"
 	fi
