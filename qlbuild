@@ -447,7 +447,7 @@ case $1 in
     prepl)
 	shift;
 	ensure_quicklisp
-	ensure_project hemlock
+	ensure_project hemlock.tty
 	if test -f "$BASE"/monster.core; then
 	    common_options="$core_option "$BASE"/monster.core $common_options"
 	fi
