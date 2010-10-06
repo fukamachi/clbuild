@@ -395,10 +395,11 @@ EOF
 }
 
 install_quicklisp() {
-    qlidir="$BASE/source/quicklisp-installer"
+    qlidir="$BASE/quicklisp-installer"
     qli="$qlidir/quicklisp.lisp"
     mkdir -p "$qlidir"
     wget -O "$qli" http://quickstart.quicklisp.org/quicklisp.lisp
+    require_asdf='(progn)'
     echo "$quit" | \
 	clbuild_lisp \
 	$eval "(load \"$qli\")" \
