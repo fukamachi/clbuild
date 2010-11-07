@@ -25,7 +25,10 @@
 	      (remove-if-not (lambda (x)
 			       (let ((y (namestring (eval x))))
 				 (search "quicklisp" y)))
-			     asdf:*central-registry*))))
+			     asdf:*central-registry*)))
+  (let ((conf (merge-pathnames "conf.lisp" base-dir)))
+    (when (probe-file conf)
+      (load conf))))
 
 
 ;;;;
