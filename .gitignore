@@ -1,0 +1,6 @@
+.start-slime.el
+*~
+qlbuild.conf
+quicklisp-installer
+source
+*.core
