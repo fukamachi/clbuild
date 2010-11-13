@@ -27,7 +27,9 @@ Commands are:
 
   Software installation from version control (overrides quicklisp):
 
-    install-from-upstream PROJECT...      install projects
+    install-from-upstream PROJECT...   install projects from upstream
+    upstream-list           list projects available from upstream
+    upstream-apropos FOO    list projects matching FOO
     trash PROJECT...        remove project
 
   Lisp invocation:

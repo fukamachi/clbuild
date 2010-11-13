@@ -194,3 +194,28 @@ clean_links() {
 	fi
     done
 }
+
+upstream_list() {
+    pattern="${1:-.}"
+
+    TMPDIR=`mktemp -d /tmp/clbuild.XXXXXXXXXX`
+    export TMPDIR
+    
+    cleanup() {
+        rm -rf $TMPDIR
+    }
+    trap cleanup EXIT
+
+    cat $PROJECT_LISTING_FILES \
+	| sort \
+	| grep -i -E "$pattern" \
+	| while read project rest
+    do
+	if test -n "$project" -a x"$project" != 'x#'; then
+	    description=`echo $rest | cut -d\# -f2`
+	    echo "$status $project" >>$TMPDIR/left
+	    echo $description >>$TMPDIR/right
+	fi
+    done
+    paste $TMPDIR/left $TMPDIR/right | expand -t 25
+}

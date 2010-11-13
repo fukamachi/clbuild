@@ -73,6 +73,14 @@ case $command in
 	. $internal/download.sh
 	install_from_upstream $*
 	;;
+    upstream-list)
+	. $internal/download.sh
+	upstream_list
+	;;
+    upstream-apropos)
+	. $internal/download.sh
+	upstream_list "$1"
+	;;
     trash)
 	. $internal/get-misc.sh
 	. $internal/download.sh
