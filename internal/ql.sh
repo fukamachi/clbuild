@@ -30,7 +30,7 @@ install_quicklisp() {
     qlidir="$base/quicklisp-installer"
     qli="$qlidir/quicklisp.lisp"
     mkdir -p "$qlidir"
-    wget -O "$qli" http://quickstart.quicklisp.org/quicklisp.lisp
+    wget -O "$qli" http://beta.quicklisp.org/quicklisp.lisp
     init_asdf_1='(progn)'
     init_asdf_2='(progn)'
     echo "$quit" | \
