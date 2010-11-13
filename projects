@@ -368,3 +368,6 @@ hu.dwim.stefil get_darcs http://www.knowledgetools.de/tmp/temporaer/tomas/hu.dwi
 hu.dwim.util get_darcs http://www.knowledgetools.de/tmp/temporaer/tomas/hu.dwim.util/
 hu.dwim.walker get_darcs http://www.knowledgetools.de/tmp/temporaer/tomas/hu.dwim.walker/
 hu.dwim.wui get_darcs http://www.knowledgetools.de/tmp/temporaer/tomas/hu.dwim.wui/
+
+# ?
+gbbopen get_svn http://gbbopen.org/svn/GBBopen/trunk/ #blackboard-system framework, tools, & utilities
