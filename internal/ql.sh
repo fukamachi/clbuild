@@ -109,3 +109,7 @@ update_client() {
 quicklisp_system_list() {
     echo "$quit" | run_lisp_with_ql $eval "(print (ql:system-list))"
 }
+
+quicklisp_system_apropos() {
+    echo "$quit" | run_lisp_with_ql $eval "(print (ql:system-apropos \"$1\"))"
+}

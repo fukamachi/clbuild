@@ -45,7 +45,11 @@ case $command in
         ;;
     system-list)
 	ensure_quicklisp_core
-        quicklisp_system_list "$@"
+        quicklisp_system_list
+	;;
+    system-apropos)
+	ensure_quicklisp_core
+        quicklisp_system_apropos "$1"
 	;;
     update-all-dists)
 	update_all_dists

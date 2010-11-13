@@ -20,6 +20,7 @@ Commands are:
 
     quickload SYSTEM        ensure that SYSTEM has been downloaded
     system-list             list systems available through quicklisp
+    system-apropos FOO      list systems matching FOO
     update-all-dists        update all dists downloaded using quicklisp
     update-dist DIST        update this dist
     update-client           update the quicklisp client
