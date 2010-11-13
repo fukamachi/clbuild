@@ -88,6 +88,15 @@ update_all_dists() {
     echo "$quit" | run_lisp_with_ql $eval "(ql:update-all-dists)"
 }
 
+update_dist() {
+    if ! test -f "$ql_setup_lisp"; then
+	echo quicklisp not found, nothing to update
+	exit 1
+    fi
+    rm_cores
+    echo "$quit" | run_lisp_with_ql $eval "(ql:update-dist \"$1\")"
+}
+
 update_client() {
     if ! test -f "$ql_setup_lisp"; then
 	echo quicklisp not found, nothing to update
@@ -95,4 +104,8 @@ update_client() {
     fi
     rm_cores
     echo "$quit" | run_lisp_with_ql $eval "(ql:update-client)"
+}
+
+quicklisp_system_list() {
+    echo "$quit" | run_lisp_with_ql $eval "(print (ql:system-list))"
 }

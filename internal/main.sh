@@ -43,8 +43,15 @@ case $command in
 	ensure_quicklisp_core
         quickload "$@"
         ;;
+    system-list)
+	ensure_quicklisp_core
+        quicklisp_system_list "$@"
+	;;
     update-all-dists)
 	update_all_dists
+        ;;
+    update-dist)
+	update_dist "$1"
         ;;
     update-client)
 	update_client

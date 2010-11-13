@@ -19,7 +19,9 @@ Commands are:
   Software installation and quicklisp interaction:
 
     quickload SYSTEM        ensure that SYSTEM has been downloaded
-    update-all-dists        update sources downloaded using quicklisp
+    system-list             list systems available through quicklisp
+    update-all-dists        update all dists downloaded using quicklisp
+    update-dist DIST        update this dist
     update-client           update the quicklisp client
 
   Software installation from version control (overrides quicklisp):
