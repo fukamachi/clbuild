@@ -1,14 +1,14 @@
-# Optional qlbuild configuration options.
+# Optional clbuild configuration options.
 
 # ############################################################
 #  This file is for defaults only. To override them,
-#  create a configuration file qlbuild.conf instead.
+#  create a configuration file clbuild.conf instead.
 # ############################################################
 
-# After startup, qlbuild sources
-#   1. qlbuild.conf.default (this file)
+# After startup, clbuild sources
+#   1. clbuild.conf.default (this file)
 #      containing only defaults (and various examples)
-#   2. qlbuild.conf (if it exists)
+#   2. clbuild.conf (if it exists)
 #      with user-specific configuration 
 
 
@@ -17,7 +17,7 @@
 # By default, we suppress loading of ~/.sbclrc, since users very often
 # have code in it that is incompatible with our fresh installation.
 #
-# Uncomment the "unset" line in qlbuild.conf to suppress passing a
+# Uncomment the "unset" line in clbuild.conf to suppress passing a
 #  --userinit argument to the lisp.
 
 USER_INIT=/dev/null

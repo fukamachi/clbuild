@@ -1,10 +1,10 @@
 ### internal/slime.sh -- slime stuff
 ###
-### Part of qlbuild, a wrapper script for Lisp invocation with quicklisp
+### Part of clbuild, a wrapper script for Lisp invocation with quicklisp
 ### preloaded.  Based on code from clbuild by Luke Gorrie and
 ### contributors.
 
-test -f $base/qlbuild || exit 1
+test -f $base/clbuild || exit 1
 
 ###
 ### write_slime_configuration
@@ -32,7 +32,7 @@ write_slime_configuration() {
 ;;; (setq slime-backend "$base/.swank-loader.lisp")
 (setq inhibit-splash-screen t)
 ;;; (load "${source_namestring}slime/slime")
-(setq inferior-lisp-program "$base/qlbuild $cmd")
+(setq inferior-lisp-program "$base/clbuild $cmd")
 (slime-setup '(slime-fancy slime-tramp slime-asdf))
 (slime-require :swank-listener-hooks)
 (slime)

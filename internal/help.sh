@@ -1,10 +1,10 @@
 ### internal/slime.sh -- print help
 ###
-### Part of qlbuild, a wrapper script for Lisp invocation with quicklisp
+### Part of clbuild, a wrapper script for Lisp invocation with quicklisp
 ### preloaded.  Based on code from clbuild by Luke Gorrie and
 ### contributors.
 
-test -f $base/qlbuild || exit 1
+test -f $base/clbuild || exit 1
 
 ###
 
@@ -24,7 +24,7 @@ Commands are:
 
   Software installation from version control (overrides quicklisp):
 
-    clbuild PROJECT...      install projects
+    install-from-upstream PROJECT...      install projects
     trash PROJECT...        remove project
 
   Lisp invocation:
@@ -36,7 +36,7 @@ Commands are:
   Housekeeping and utilities:
 
     rm-cores                clean out previously dumped core files
-    slime-configuration     show information on how qlbuild starts slime
+    slime-configuration     show information on how clbuild starts slime
     help                    this help
     compile-implementation  compile SBCL
 EOF

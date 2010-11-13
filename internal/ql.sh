@@ -1,10 +1,10 @@
 ### internal/ql.sh -- clbuild/quicklisp integration code
 ###
-### Part of qlbuild, a wrapper script for Lisp invocation with quicklisp
+### Part of clbuild, a wrapper script for Lisp invocation with quicklisp
 ### preloaded.  Based on code from clbuild by Luke Gorrie and
 ### contributors.
 
-test -f $base/qlbuild || exit 1
+test -f $base/clbuild || exit 1
 
 
 ###
@@ -41,9 +41,9 @@ install_quicklisp() {
 
 ensure_quicklisp() {
     if ! test -f "$ql_setup_lisp"; then
-	echo qlbuild: quicklisp not found, installing it now... 
+	echo clbuild: quicklisp not found, installing it now... 
 	install_quicklisp
-	echo qlbuild: done installing quicklisp
+	echo clbuild: done installing quicklisp
     fi
 }
 
@@ -69,12 +69,12 @@ ensure_project() {
 ensure_quicklisp_core() {
     ensure_quicklisp
     if ! test -f "$ql_core"; then
-	echo qlbuild: core file $ql_core not found, dumping now...
+	echo clbuild: core file $ql_core not found, dumping now...
 	dump_core "$ql_core"
-	echo qlbuild: done dumping the core file
+	echo clbuild: done dumping the core file
     elif test $ql_setup_lisp -nt $ql_core; then
-	echo qlbuild: Warning: $ql_setup_lisp is newer than $ql_core.
-	echo consider running qlbuild rm-cores
+	echo clbuild: Warning: $ql_setup_lisp is newer than $ql_core.
+	echo consider running clbuild rm-cores
     fi
     with_core_options="$core_option $ql_core $common_options"
 }

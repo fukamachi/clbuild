@@ -1,0 +1,16 @@
+;;; Example for custom ASDF configuration.
+;;;
+;;; clbuild normally overrides ~/.sbclrc and cleans out various ASDF
+;;; variables to avoid local settings that would interfere with the
+;;; clbuild directory.
+;;;
+;;; To allow users to re-customize ASDF, this file gets loaded immediately
+;;; after quicklisp and ASDF.
+
+;;; Copy this file over as "conf.lisp" and then edit as needed.
+
+;; random examples:
+
+(load #p"/home/.myconfig.lisp")
+
+(push #p"/home/x/y/" asdf:*central-registry*)

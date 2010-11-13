@@ -1,10 +1,10 @@
 ### internal/download.sh -- the old heart of clbuild
 ###
-### Part of qlbuild, a wrapper script for Lisp invocation with quicklisp
+### Part of clbuild, a wrapper script for Lisp invocation with quicklisp
 ### preloaded.  Based on code from clbuild by Luke Gorrie and
 ### contributors.
 
-test -f $base/qlbuild || exit 1
+test -f $base/clbuild || exit 1
 
 ###
 
@@ -17,7 +17,7 @@ if test -f "$base/my-projects"; then
     PROJECT_LISTING_FILES="$base/my-projects $PROJECT_LISTING_FILES"
 fi
 
-clbuild() {
+install_from_upstream() {
         TMPDIR=`mktemp -d /tmp/clbuild.XXXXXXXXXX`
 	export TMPDIR
 
@@ -43,11 +43,11 @@ clbuild() {
 	cat <<EOF
 update complete.
 
-Note: qlbuild does not install dependencies automatically.
+Note: clbuild does not install dependencies automatically.
 Run
 EOF
 	for x in $*; do
-	    echo "  qlbuild quickload $x"
+	    echo "  clbuild quickload $x"
 	done
 	cat <<EOF
 to install any dependencies using quicklisp.

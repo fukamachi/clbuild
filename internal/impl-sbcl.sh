@@ -1,10 +1,10 @@
 ### internal/slime.sh -- slime stuff
 ###
-### Part of qlbuild, a wrapper script for Lisp invocation with quicklisp
+### Part of clbuild, a wrapper script for Lisp invocation with quicklisp
 ### preloaded.  Based on code from clbuild by Luke Gorrie and
 ### contributors.
 
-test -f $base/qlbuild || exit 1
+test -f $base/clbuild || exit 1
 
 ###
 _configure_implementation() {
@@ -62,10 +62,10 @@ EOF
 
 SBCL has been compiled and installed to $target_dir.
 
-*** Note that qlbuild will not use the newly compiled SBCL by default.
-*** Add this code to qlbuild.conf to activate it:
+*** Note that clbuild will not use the newly compiled SBCL by default.
+*** Add this code to clbuild.conf to activate it:
 
-cat >>$base/qlbuild.conf <<eof
+cat >>$base/clbuild.conf <<eof
 LISP_IMPLEMENTATION_TYPE=sbcl
 LISP_BINARY=$target_dir/bin/sbcl
 export SBCL_HOME=$target_dir/lib/sbcl/

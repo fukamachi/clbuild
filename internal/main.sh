@@ -1,10 +1,10 @@
 ### internal/main.sh -- command line arguments
 ###
-### Part of qlbuild, a wrapper script for Lisp invocation with quicklisp
+### Part of clbuild, a wrapper script for Lisp invocation with quicklisp
 ### preloaded.  Based on code from clbuild by Luke Gorrie and
 ### contributors.
 
-test -f $base/qlbuild || exit 1
+test -f $base/clbuild || exit 1
 
 ###
 
@@ -32,7 +32,7 @@ case $command in
 	$emacs -l "$base/.start-slime.el" ${emacs_args}
 	;;
     slime-configuration)
-	echo ';; add this to your ~/.emacs to use qlbuild and its slime:'
+	echo ';; add this to your ~/.emacs to use clbuild and its slime:'
 	echo ';;'
 	write_slime_configuration
 	;;
@@ -57,10 +57,10 @@ case $command in
 	rm_cores
 	compile_implementation
 	;;
-    clbuild)
+    install-from-upstream)
 	. $internal/get-misc.sh
 	. $internal/download.sh
-	clbuild $*
+	install_from_upstream $*
 	;;
     trash)
 	. $internal/get-misc.sh

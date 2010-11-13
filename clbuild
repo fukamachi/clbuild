@@ -32,9 +32,9 @@ internal=$base/internal
 ###
 ### Load configuration files
 ###
-source "$base/qlbuild.conf.default"
-if test -f "$base/qlbuild.conf"; then
-    source "$base/qlbuild.conf"
+source "$base/clbuild.conf.default"
+if test -f "$base/clbuild.conf"; then
+    source "$base/clbuild.conf"
 fi
 
 
