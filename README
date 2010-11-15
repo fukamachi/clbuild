@@ -18,7 +18,7 @@ This is clbuild 2.0, a shell script with the following features:
     projects is done by Quicklisp and ASDF.
 
   - Like classic clbuild from darcs, the current version still supports
-    download from projects directloy from upstream's version control.
+    download from projects directly from upstream's version control.
 
     If you choose this installation method for a project, the
     version-controlled checkout overrides any previous installation made
