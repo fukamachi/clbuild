@@ -66,7 +66,7 @@ case $command in
 	;;
     compile-implementation)
 	rm_cores
-	compile_implementation
+	compile_implementation "$@"
 	;;
     install-from-upstream)
 	. $internal/get-misc.sh

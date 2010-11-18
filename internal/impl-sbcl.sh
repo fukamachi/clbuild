@@ -56,7 +56,7 @@ _compile_implementation() {
 EOF
 	fi
     fi
-    (cd $source_dir/sbcl; sh make.sh "$3"; SBCL_HOME= INSTALL_ROOT=${target_dir} sh install.sh)
+    (cd $source_dir/sbcl; sh make.sh "$1"; SBCL_HOME= INSTALL_ROOT=${target_dir} sh install.sh)
     if test -f $target_dir/bin/sbcl; then
 	cat <<EOF
 
