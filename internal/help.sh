@@ -34,9 +34,9 @@ Commands are:
 
   Lisp invocation:
 
+    prepl                   run Lisp on the terminal (with line editing)
+    lisp                    run Lisp on the terminal (raw)
     slime                   run Lisp (using Emacs and SLIME)
-    lisp                    run Lisp (using the terminal)
-    prepl                   run Lisp (with prepl; experimental)
 
   Housekeeping and utilities:
 
