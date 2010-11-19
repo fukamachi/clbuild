@@ -27,3 +27,8 @@ _configure_implementation() {
     build_options="$noinform --batch $common_options"
     run_options="--batch $common_options"
 }
+
+_print_core_option() {
+    core_name=$1
+    echo '(ccl:save-application "'$1'")'
+}
