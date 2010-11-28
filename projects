@@ -104,7 +104,7 @@ zpb-ttf          get_git http://git.xach.com/zpb-ttf.git  #TrueType font parser
 zpb-exif         get_git http://git.xach.com/zpb-exif.git  #EXIF header parser
 zs3              get_git http://git.xach.com/zs3.git  #Amazon S3 Interface
 
-postmodern get_git http://marijn.haverbeke.nl/git/postmodern #library for interacting with PostgreSQL databases
+postmodern get_git http://marijnhaverbeke.nl/git/postmodern #library for interacting with PostgreSQL databases
 arnesi get_darcs http://common-lisp.net/project/bese/repos/arnesi_dev #bits 'n pieces of code
 fiveam get_darcs http://common-lisp.net/project/bese/repos/fiveam #regression testing framework
 ieee-floats get_darcs http://common-lisp.net/project/ieee-floats/darcs/ieee-floats #IEEE 754 encoder/decoder
