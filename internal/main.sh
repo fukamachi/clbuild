@@ -99,6 +99,11 @@ case $command in
 	    shift
 	done
 	;;
+    ed)
+	source $internal/user.sh
+	ensure_user_core
+	cl_ed "$@"
+	;;
     *)
 	echo "invalid command $command, try --help for help"
 	exit 1

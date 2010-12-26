@@ -37,6 +37,7 @@ Commands are:
     prepl                   run Lisp on the terminal (with line editing)
     lisp                    run Lisp on the terminal (raw)
     slime                   run Lisp (using Emacs and SLIME)
+    ed [PATHNAME|SYMBOL]    run the CL function ED (uses usercore.conf)
 
   Housekeeping and utilities:
 
