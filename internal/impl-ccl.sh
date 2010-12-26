@@ -26,6 +26,11 @@ _configure_implementation() {
     # fixme: this doesn't quite match the SBCL version yet:
     build_options="$noinform --batch $common_options"
     run_options="--batch $common_options"
+
+    if test -z "$CCL_DEFAULT_DIRECTORY"; then
+	export CCL_DEFAULT_DIRECTORY=$(dirname $LISP_BINARY)
+	echo CCL_DEFAULT_DIRECTORY not set, defaulting to $CCL_DEFAULT_DIRECTORY
+    fi
 }
 
 _print_core_option() {

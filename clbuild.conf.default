@@ -27,11 +27,25 @@ USER_INIT=/dev/null
 ####
 #### Set a lisp implementation type and binary name.
 
-# SBCL is the default and usually works best.
+# SBCL is the default.
 
+# Configuration for SBCL.
+# (Note that you may also want to set SBCL_HOME here.)
 LISP_IMPLEMENTATION_TYPE=sbcl;     LISP_BINARY=sbcl
 
+# Configuration for Clozure CL.
+#
+# Note that you may also want to set CCL_DEFAULT_DIRECTORY here.  But if it
+# isn't set, clbuild defaults it to the directory of $LISP_BINARY.
+# 
+# This differs from standard CCL behaviour in that CCL uses the
+# directory of the image, not the binary.  But since the image is stored
+# in the clbuild directory, that wouldn't work.
+#
 #LISP_IMPLEMENTATION_TYPE=ccl;     LISP_BINARY=lx86cl64
+
+# Configuration for other implementations:
+#
 #LISP_IMPLEMENTATION_TYPE=clisp;   LISP_BINARY=clisp
 #LISP_IMPLEMENTATION_TYPE=alisp;   LISP_BINARY=alisp
 #LISP_IMPLEMENTATION_TYPE=cmu;     LISP_BINARY=lisp
