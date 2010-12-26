@@ -1,0 +1,11 @@
+# When running a command that uses the "user.core", clbuild will load
+# every asdf system listed in this file into that core.
+#
+# Syntax is one system name per line.  # starts a one-line comment.
+# Lines empty after removal of comments and whitespace will be ignored.
+
+# Examples (remove the comment character.)
+
+#hemlock.tty
+#hemlock.clx
+#hemlock.qt

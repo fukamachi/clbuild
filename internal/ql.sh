@@ -72,9 +72,6 @@ ensure_quicklisp_core() {
 	echo clbuild: no valid core file $ql_core, dumping now...
 	dump_core "$ql_core"
 	echo clbuild: done dumping the core file
-    elif test $ql_setup_lisp -nt $ql_core; then
-	echo clbuild: Warning: $ql_setup_lisp is newer than $ql_core.
-	echo consider running clbuild rm-cores
     fi
     with_core_options="$core_option $ql_core $common_options"
 }

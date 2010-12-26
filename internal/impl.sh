@@ -83,7 +83,7 @@ dump_core() {
 
 rm_cores() {
     echo cleaning cores
-    for core in base prepl; do
+    for core in base prepl user; do
 	p=$base/$LISP_IMPLEMENTATION_TYPE-${core}.core
 	echo -n checking ${p}...
 	if test -f "$p"; then
@@ -97,7 +97,7 @@ rm_cores() {
 
 valid_core_p() {
     if ! test -f "$1"; then exit 1; fi
-    for f in "$base/clbuild.conf" "$base/conf.lisp" "$base/internal/asdf-setup.lisp"
+    for f in "$base/clbuild.conf" "$base/conf.lisp" "$base/internal/asdf-setup.lisp" "$base/usercore.conf" "$ql_setup_lisp"
     do
 	if test -f "$f" -a ! "$1" -nt "$f"; then exit 1; fi
     done

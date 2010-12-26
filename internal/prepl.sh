@@ -15,9 +15,6 @@ ensure_prepl_core() {
 	    "$prepl_core" \
 	    $eval "(ql:quickload \"hemlock.tty\")"
 	echo clbuild: done dumping the core file
-    elif test $ql_setup_lisp -nt $prepl_core; then
-	echo clbuild: Warning: $ql_setup_lisp is newer than $prepl_core.
-	echo consider running clbuild rm-cores
     fi
     with_core_options="$core_option $prepl_core $common_options"
 }

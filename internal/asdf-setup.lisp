@@ -7,9 +7,11 @@
 ;;; At this point, quicklisp already been set up.  We count on quicklisp
 ;;; to load the right version of ASDF.
 
-(defpackage clbuild
-  (:use)
+(defpackage :clbuild
+  (:use :cl)
   (:export "FIX-CENTRAL-REGISTRY"))
+
+(in-package :clbuild)
 
 ;;;;
 ;;;; central registry

@@ -44,5 +44,11 @@ Commands are:
     slime-configuration     show information on how clbuild starts slime
     help                    this help
     compile-implementation  compile SBCL
+
+Important configuration files:
+
+  clbuild.conf  (make a copy of  clbuild.conf.example and edit it)
+  conf.lisp     (make a copy of     conf.lisp.example and edit it)
+  usercore.conf (make a copy of usercore.conf.example and edit it)
 EOF
 }
