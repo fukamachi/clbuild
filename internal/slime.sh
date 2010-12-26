@@ -11,11 +11,7 @@ test -f $base/clbuild || exit 1
 ###
 
 write_slime_configuration() {
-    if test -n "$START_SLIME_USING_CORE"; then
-	cmd=preloaded
-    else
-	cmd=lisp
-    fi
+    cmd=lisp
     cat <<EOF
 
 ;; possibly controversial as a global default, but shipping a lisp
@@ -26,23 +22,13 @@ write_slime_configuration() {
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (require 'slime)
 
-;;; old clbuild code following, most of it now unneeded
-;;; (setq load-path (cons "${source_namestring}slime" load-path))
-;;; (setq load-path (cons "${source_namestring}slime/contrib" load-path))
-;;; (setq slime-backend "$base/.swank-loader.lisp")
 (setq inhibit-splash-screen t)
-;;; (load "${source_namestring}slime/slime")
 (setq inferior-lisp-program "$base/clbuild $cmd")
 (slime-setup '(slime-fancy slime-tramp slime-asdf))
 (slime-require :swank-listener-hooks)
 (slime)
 
 EOF
-#     # while we're at it, also write the swank loader
-#     cat >$base/.swank-loader.lisp <<EOF
-# (unless (find-package 'swank-loader)
-#   (load "$slime_dir/swank-loader.lisp"))
-# EOF
 }
 
 ensure_slime() {
