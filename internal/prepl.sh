@@ -9,8 +9,8 @@ test -f $base/clbuild || exit 1
 ensure_prepl_core() {
     prepl_core=$base/$LISP_IMPLEMENTATION_TYPE-prepl.core
     ensure_quicklisp
-    if ! test -f "$prepl_core"; then
-	echo clbuild: core file $prepl_core not found, dumping now...
+    if ! (valid_core_p "$prepl_core"); then
+	echo clbuild: no valid core file $prepl_core, dumping now...
 	dump_core \
 	    "$prepl_core" \
 	    $eval "(ql:quickload \"hemlock.tty\")"

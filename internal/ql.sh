@@ -68,8 +68,8 @@ ensure_project() {
 
 ensure_quicklisp_core() {
     ensure_quicklisp
-    if ! test -f "$ql_core"; then
-	echo clbuild: core file $ql_core not found, dumping now...
+    if ! (valid_core_p "$ql_core"); then
+	echo clbuild: no valid core file $ql_core, dumping now...
 	dump_core "$ql_core"
 	echo clbuild: done dumping the core file
     elif test $ql_setup_lisp -nt $ql_core; then
