@@ -50,3 +50,35 @@ LISP_IMPLEMENTATION_TYPE=sbcl;     LISP_BINARY=sbcl
 #LISP_IMPLEMENTATION_TYPE=alisp;   LISP_BINARY=alisp
 #LISP_IMPLEMENTATION_TYPE=cmu;     LISP_BINARY=lisp
 #LISP_IMPLEMENTATION_TYPE=ecl;     LISP_BINARY=ecl
+
+#### processing command line arguments
+####
+#### if the user has used --implementation, --type, or --binary on the
+#### command line, the variables FORCE_LISP_IMPLEMENTATION_TYPE and/or
+#### FORCE_LISP_BINARY will be set.
+####
+#### If this file does nothing special to them, they will override the
+#### defaults for LISP_IMPLEMENTATION_TYPE and LISP_BINARY.
+####
+#### However, clbuild.conf can tweak the FORCE_ variables if it so desires.
+
+# Possible use cases are:
+
+# a. you want clbuild.conf to override the command line unconditionally.
+#    In that case you would uncomment the following lines:
+#unset FORCE_LISP_IMPLEMENTATION_TYPE
+#unset FORCE_LISP_BINARY
+
+# b. you want clbuild.conf to accept FORCE_LISP_IMPLEMENTATION_TYPE
+#    and/or FORCE_LISP_BINARY, but default one of them based on the
+#    other intelligently.
+#    Example:
+#
+#case $FORCE_LISP_IMPLEMENTATION_TYPE in
+#    lx86cl|lx86cl64)
+#	FORCE_LISP_IMPLEMENTATION_TYPE=ccl
+#	;;
+#    lisp)
+#	FORCE_LISP_IMPLEMENTATION_TYPE=cmu
+#	;;
+#esac

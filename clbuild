@@ -30,6 +30,34 @@ internal=$base/internal
 
 
 ###
+### early options
+###
+while :; do
+    case $1 in
+	--implementation)
+	    FORCE_LISP_BINARY=$2
+	    FORCE_LISP_IMPLEMENTATION_TYPE=$(basename $FORCE_LISP_BINARY) 
+	    shift 2
+	    ;;
+	--binary)
+	    FORCE_LISP_BINARY=$2
+	    shift 2
+	    ;;
+	--type)
+	    FORCE_LISP_IMPLEMENTATION_TYPE=$2
+	    shift 2
+	    ;;
+	--debug)
+	    set -x
+	    shift
+	    ;;
+	*)
+	    break
+	    ;;
+    esac
+done
+
+###
 ### Load configuration files
 ###
 source "$base/clbuild.conf.default"
@@ -37,6 +65,19 @@ if test -f "$base/clbuild.conf"; then
     source "$base/clbuild.conf"
 fi
 
+# now that user's clbuild.conf has had a change to override FORCE_LISP_*,
+# we set the real options accordingly.  This order was chosen to achieve
+# the following goals:
+#   - command line options override the ordinary preference in clbuild.conf
+#   - clbuild.conf can override the command line options if it really wants to
+#   - in particular, clbuild.conf can do clever things to default one
+#     variable from the other
+if test -n "$FORCE_LISP_BINARY"; then
+    LISP_BINARY=$FORCE_LISP_BINARY
+fi
+if test -n "$FORCE_LISP_IMPLEMENTATION_TYPE"; then
+    LISP_IMPLEMENTATION_TYPE=$FORCE_LISP_IMPLEMENTATION_TYPE
+fi
 
 ###
 ### Load sources
@@ -50,10 +91,6 @@ source $internal/impl.sh
 ### Choose a Lisp
 ###
 
-if test "$1" = "--implementation" ; then
-    $LISP_IMPLEMENTATION_TYPE=$2
-    shift 2
-fi
 configure_implementation
 
 ###
