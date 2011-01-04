@@ -26,10 +26,11 @@ cl_ed() {
     elif echo "$1" | grep -E '^[/.]' >/dev/null || test -f "$1"; then
         # looks like a path
 	form="(ed \"$1\")"
+	shift
     else
         # might be a lisp form
 	form="(ed (cl:quote $1))"
+	shift
     fi
-    shift
     run_lisp_with_core "$@" $eval "(progn $form $quit)"
 }
