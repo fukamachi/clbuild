@@ -79,6 +79,14 @@ if test -n "$FORCE_LISP_IMPLEMENTATION_TYPE"; then
     LISP_IMPLEMENTATION_TYPE=$FORCE_LISP_IMPLEMENTATION_TYPE
 fi
 
+# also export the variables, so that a lisp started by a subprocess also
+# takes them into account, e.g. in the
+#   "clbuild --type xxx slime" -> emacs -> "clbuild lisp"
+# chain of processes.
+export FORCE_LISP_BINARY
+export FORCE_LISP_IMPLEMENTATION_TYPE
+
+
 ###
 ### Load sources
 ###
