@@ -71,7 +71,7 @@ trivial-sockets  get_clbuild_mirror #socket portability library
 split-sequence   get_clbuild_mirror #sequence splitting function
 rfc2388          get_clbuild_mirror #multipart/form-data processor
 psgraph          get_clbuild_mirror #DAG drawing library
-parse-number     get_clbuild_mirror #parser for Common Lisp number syntax
+parse-number     get_git git://gitorious.org/common-lisp/parse-number.git #parser for Common Lisp number syntax
 net-telent-date  get_clbuild_mirror #time parsing routines from CMUCL
 ltk              get_clbuild_mirror #binding for the Tk graphics toolkit
 ironclad         get_clbuild_mirror #cryptography library
