@@ -371,3 +371,5 @@ hu.dwim.wui get_darcs http://www.knowledgetools.de/tmp/temporaer/tomas/hu.dwim.w
 
 # ?
 gbbopen get_svn http://gbbopen.org/svn/GBBopen/trunk/ #blackboard-system framework, tools, & utilities
+
+idna get_git git://github.com/antifuchs/idna.git #Common Lisp IDNA encding / decoding functions
