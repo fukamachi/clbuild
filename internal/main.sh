@@ -73,6 +73,13 @@ case $command in
 	. $internal/download.sh
 	install_from_upstream $*
 	;;
+    register-asd)
+	. $internal/get-misc.sh
+	. $internal/download.sh
+	cd "$base"
+	register_asd $*
+	link_extra_asds
+	;;
     upstream-list)
 	. $internal/download.sh
 	upstream_list
