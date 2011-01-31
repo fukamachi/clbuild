@@ -282,7 +282,7 @@ get_cvs_clnet() {
     module="$1"
     project="${2:-$1}"
 
-    get_cvs_aux $module ${CLNET_USER}@common-lisp.net:/project/$project/cvsroot
+    get_cvs_aux $module ${CLNET_USER:-:pserver:anonymous:anonymous}@common-lisp.net:/project/$project/cvsroot
 }
 
 get_cvs_clnet_full() {
@@ -290,7 +290,7 @@ get_cvs_clnet_full() {
     clnetproject="${2:-$1}"
     path="$3"
 
-    get_cvs_aux $path ${CLNET_USER}@common-lisp.net:/project/$clnetproject/cvsroot $clbuildproject
+    get_cvs_aux $path ${CLNET_USER:-pserver:anonymous:anonymous}@common-lisp.net:/project/$clnetproject/cvsroot $clbuildproject
 }
 
 get_cvs_sfnet() {
