@@ -24,3 +24,8 @@ _configure_implementation() {
     build_options="$common_options"
     run_options="$common_options"
 }
+
+_print_core_option() {
+    core_name=$1
+    echo '(unwind-protect (excl:dumplisp :name "'$1'") (excl:exit))'
+}
