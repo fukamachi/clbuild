@@ -92,7 +92,7 @@ case $command in
 	. $internal/get-misc.sh
 	. $internal/download.sh
 	if test $# -lt 1; then
-	    echo 'usage: $1 [PROJECT...]'
+	    echo "usage: ${command} [PROJECT...]"
 	    exit 1
 	fi
 	while test $# -ge 1; do
