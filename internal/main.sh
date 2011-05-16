@@ -40,6 +40,10 @@ case $command in
 	echo $base
 	;;
     quickload)
+	if test $# -lt 1; then
+	    echo "usage: ${command} [SYSTEM]"
+	    exit 1
+	fi
 	ensure_quicklisp_core
         quickload "$@"
         ;;
@@ -55,6 +59,10 @@ case $command in
 	update_all_dists
         ;;
     update-dist)
+	if test $# -lt 1; then
+	    echo "usage: ${command} [DIST]"
+	    exit 1
+	fi
 	update_dist "$1"
         ;;
     update-client)
