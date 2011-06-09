@@ -131,8 +131,7 @@ montezuma        get_svn http://montezuma.googlecode.com/svn/trunk/montezuma #lu
 # end of traditional "main" project list
 
 # implementations:
-#sbcl get_cvs_sfnet     #Steel Bank Common Lisp (CVS)
-sbcl get_git git://repo.or.cz/sbcl.git #Steel Bank Common Lisp (git)
+sbcl get_git git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git
 ccl get_svn http://svn.clozure.com/publicsvn/openmcl/trunk/source #Clozure CL aka OpenMCL (trunk)
 clisp get_cvs_sfnet     #CLISP
 ecl get_cvs_full :pserver:anonymous@ecls.cvs.sf.net:/cvsroot/ecls ecl
