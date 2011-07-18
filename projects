@@ -135,6 +135,7 @@ sbcl get_git git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git
 ccl get_svn http://svn.clozure.com/publicsvn/openmcl/trunk/source #Clozure CL aka OpenMCL (trunk)
 clisp get_hg http://clisp.hg.sourceforge.net:8000/hgroot/clisp/clisp     #CLISP
 ecl get_cvs_full :pserver:anonymous@ecls.cvs.sf.net:/cvsroot/ecls ecl
+xcl get_git git://github.com/gnooth/xcl.git
 
 # "wnpp" projects follow:
 
